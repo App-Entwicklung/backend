@@ -2,9 +2,12 @@ name: Deno
 
 on:
   push:
-    branches: [main]
+    branches: ['main']
   pull_request:
-    branches: [main]
+    branches: ['main']
+
+permissions:
+  contents: read
 
 jobs:
   test:
@@ -12,7 +15,7 @@ jobs:
 
     steps:
       - name: Setup repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Deno
         # uses: denoland/setup-deno@v1
@@ -21,11 +24,10 @@ jobs:
           deno-version: v1.x
 
       - name: Verify formatting
-        run: deno fmt --options-use-tabs --options-prose-wrap=preserve
+        run: deno fmt --check
 
-      # Running linter only on written files, not generated
       - name: Run linter
-        run: deno lint backend frontend/app/src
+        run: deno lint
 
       - name: Run tests
         run: deno test -A --unstable
