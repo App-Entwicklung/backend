@@ -1,0 +1,1 @@
+@deno "cache" "--reload" "./src/app.ts" %*
