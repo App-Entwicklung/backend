@@ -1,38 +1,5 @@
 # Backend
 
-## Start Server
+## Concern
 
-_All commands in root directory._
-
-<details>
-<summary>devstart</summary>
-
-Startet in watchmode --> Hot Reload  
-
-```sh
-./bin/devstart
-```
-
-</details>
-
-<details>
-<summary>start</summary>
-
-Startet den server lokal.  
-
-```sh
-./bin/start
-```
-
-</details>
-
-<details>
-<summary>reload</summary>
-
-Holt neueste Updates für imports.  
-
-```sh
-./bin/reload
-```
-
-</details>
+Die Studentengruppe versucht eine dezentrale Chat-App zu implementieren die auf Basis der Solidity Programmiersprache eine Applikation auf der Ethereum-Blockchain aufsetzt.
