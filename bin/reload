@@ -1,2 +1,0 @@
-#!/bin/sh
-deno cache --reload ./src/app.ts
