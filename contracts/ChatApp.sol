@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.4.16 <0.9.0;
+pragma solidity ^0.8.0;
 
 contract ChatApp{
   struct Account {
@@ -21,8 +21,8 @@ contract ChatApp{
     Message[] messages;
   }
 
-  Account[] accountList;
-  Chat[] chatList;
+  Account[] private accountList;
+  Chat[] private chatList;
 
   // Account
   function createAccount(string memory name) public {
@@ -33,23 +33,46 @@ contract ChatApp{
     Account[] memory contacts;
     Account[] memory invitations;
     Account memory newAccount = Account(name, msg.sender, contacts, invitations);
-    accountList.push(newAccount);
+    insertAccount(newAccount);
   }
 
-  function deleteAccount() public {
-
+  function deleteAccount(address accountAddress) public {
+    require(accountAddress == msg.sender, "No Permission to delete this account");
+    (uint pos, bool exists) = findAccount(accountAddress);
+    require(exists, "Account does not exist");
+    removeAccount(pos);
   }
 
-  function getName() public {
-
+  function getName() public view returns(string memory) {
+    (uint pos, bool exists) = findAccount(msg.sender);
+    require(exists, "You do not have an account yet");
+    return accountList[pos].name;
   }
 
-  function setName() public {
-
+  function getName(address accountAddress) public view returns(string memory) {
+    (uint pos, bool exists) = findAccount(accountAddress);
+    require(exists, "Account does not exist");
+    return accountList[pos].name;
   }
 
-  function getContacts() public {
+  function setName(string memory newName) public {
+    (uint pos, bool exists) = findAccount(msg.sender);
+    require(exists, "Account does not exist");
+    accountList[pos].name = newName;
+  }
 
+  function getContactAddresses() public view returns(address[] memory) {
+    (uint pos, bool exists) = findAccount(msg.sender);
+    require(exists, "Account does not exist");
+
+    Account memory currAccount = accountList[pos];
+    address[] memory addresses;
+
+    for(uint i = 0; i < currAccount.contacts.length; i++) {
+      addresses[i] = (currAccount.contacts[i].accountAddress);
+    }
+
+    return addresses;
   }
 
   // Creata a chat with 1 Friend
@@ -93,7 +116,11 @@ contract ChatApp{
     return (0, false);
   }
 
-  function insertAccount() private returns(bool) {
+  function insertAccount(Account memory newAccount) private {
+    accountList.push(newAccount);
+  }
 
+  function removeAccount(uint index) private {
+    delete accountList[index];
   }
 }
