@@ -5,13 +5,22 @@ contract ChatApp{
   struct Account {
     string name;
     address accountAddress;
-    Account[] contacts;
-    Account[] chatInvitations;
+    Contact[] contacts;
+    address[] sendedRequests;
+    address[] receivedRequests;
+    Chat[] chats;
+    bool isPublic;
+  }
+
+  struct Contact {
+    string name;
+    address accountAddress;
   }
 
   struct Message {
     uint id;
     address sender;
+    address receiver;
     string timestamp;
     string text;
   }
@@ -30,9 +39,11 @@ contract ChatApp{
     (uint pos, bool exists) = findAccount(msg.sender);
     require(!exists, "Account already exists");
     
-    Account[] memory contacts;
-    Account[] memory invitations;
-    Account memory newAccount = Account(name, msg.sender, contacts, invitations);
+    Contact[] memory contacts;
+    address[] memory sendedRequests;
+    address[] memory receivedRequests;
+    Chat[] memory chats;
+    Account memory newAccount = Account(name, msg.sender, contacts, sendedRequests, receivedRequests, chats, false);
     insertAccount(newAccount);
   }
 
@@ -57,38 +68,68 @@ contract ChatApp{
 
   function setName(string memory newName) public {
     (uint pos, bool exists) = findAccount(msg.sender);
-    require(exists, "Account does not exist");
+    require(exists, "You don not have an account yet");
     accountList[pos].name = newName;
   }
 
-  function getContactAddresses() public view returns(address[] memory) {
+  function getContacts() public view returns(Contact[] memory) {
     (uint pos, bool exists) = findAccount(msg.sender);
-    require(exists, "Account does not exist");
+    require(exists, "You do not have an account yet");
 
-    Account memory currAccount = accountList[pos];
-    address[] memory addresses;
-
-    for(uint i = 0; i < currAccount.contacts.length; i++) {
-      addresses[i] = (currAccount.contacts[i].accountAddress);
-    }
-
-    return addresses;
+    return accountList[pos].contacts;
   }
+
+  function setAccountPublicity(bool isPublic) public {
+    (uint pos, bool exists) = findAccount(msg.sender);
+    require(exists, "You do not have an account yet");
+
+    accountList[pos].isPublic = isPublic;
+  } 
 
   // Creata a chat with 1 Friend
-  function sendChatInvitation() public {
-    
+  function sendContactRequest(address contactAddress) public {
+    (uint pos, bool exists) = findAccount(msg.sender);
+    require(exists, "You don not have an account yet");
+    (uint contactPos, bool contactExists) = findAccount(contactAddress);
+    require(contactExists, "The requested account does not exist");
+
+    accountList[pos].sendedRequests.push(contactAddress);
+    accountList[contactPos].receivedRequests.push(msg.sender);
   }
 
-  function getChatInvitations() public {
+  function deleteSendedRequest(address contactAddress) public {
+    (uint pos, bool exists) = findAccount(msg.sender);
+    require(exists, "You don not have an account yet");
+    (uint contactPos, bool contactExists) = findAccount(contactAddress);
+    require(contactExists, "The requested account does not exist");
+
+    (uint sendedPos, bool sendedExists) = findAddressInList(contactAddress, accountList[pos].sendedRequests);
+    (uint receivedPos, bool receivedExists) = findAddressInList(contactAddress, accountList[contactPos].receivedRequests);
+
+    assert(sendedExists == receivedExists);
+    require(sendedExists, "There is no request open for this account");
+
+    delete accountList[pos].sendedRequests[sendedPos];
+    delete accountList[contactPos].receivedRequests[receivedPos];
+  }
+
+  function getContactRequests() public view returns(address[] memory) {
+    (uint pos, bool exists) = findAccount(msg.sender);
+    require(exists, "You don not have an account yet");
+
+    //Contact[] memory contacts = accountList[pos].receivedRequests;
+    return accountList[pos].receivedRequests;
+  }
+
+  function acceptContactRequest() public {
+    (uint pos, bool exists) = findAccount(msg.sender);
+    require(exists, "You don not have an account yet");
 
   }
 
-  function acceptChatInvitation() public {
-
-  }
-
-  function denieChatInvitation() public {
+  function denieContactRequest() public {
+    (uint pos, bool exists) = findAccount(msg.sender);
+    require(exists, "You don not have an account yet");
 
   }
 
@@ -110,6 +151,15 @@ contract ChatApp{
   function findAccount(address accountAddress) private view returns(uint, bool) {
     for(uint i = 0; i < accountList.length; i++) {
       if(accountList[i].accountAddress == accountAddress) {
+        return (i, true);
+      }
+    }
+    return (0, false);
+  }
+
+  function findAddressInList(address accountAddress, address[] memory addressList) private view returns(uint, bool) {
+    for(uint i = 0; i < addressList.length; i++) {
+      if(addressList[i] == accountAddress) {
         return (i, true);
       }
     }
