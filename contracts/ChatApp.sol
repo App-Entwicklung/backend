@@ -4,12 +4,12 @@ pragma solidity ^0.8.0;
 contract ChatApp{
   struct Account {
     string name;
-    address accountAddress;
     Contact[] contacts;
     Contact[] sendedRequests;
     Contact[] receivedRequests;
     Chat[] chats;
     bool isPublic;
+    bool exists;
   }
 
   struct Contact {
@@ -31,133 +31,113 @@ contract ChatApp{
   }
 
 
-  Account[] private accountList;
+  //Account[] private accountList;
+  mapping(address => Account) private accountList;
   Chat[] private chatList;
 
   // -----------------------------------------------------------------------------------------------------------
   // Account
   // -----------------------------------------------------------------------------------------------------------
   function createAccount(string memory name) public {
+    require(!accountList[msg.sender].exists, "Account already exists");
     require(ripemd160(abi.encodePacked(name)) != ripemd160(""), "No accountname set");
-    (uint pos, bool exists) = findAccount(msg.sender);
-    require(!exists, "Account already exists");
     
-    Contact[] memory contacts;
-    Contact[] memory sendedRequests;
-    Contact[] memory receivedRequests;
-    Chat[] memory chats;
-    Account memory newAccount = Account(name, msg.sender, contacts, sendedRequests, receivedRequests, chats, false);
-    insertAccount(newAccount);
+    accountList[msg.sender].name = name;
+    accountList[msg.sender].exists = true;
   }
 
   function deleteAccount() public {
-    (uint pos, bool exists) = findAccount(msg.sender);
-    require(exists, "Account does not exist");
-    removeAccount(pos);
+    require(accountList[msg.sender].exists, "Account does not exist");
+    accountList[msg.sender].exists = false;
   }
 
   function getName() public view returns(string memory) {
-    (uint pos, bool exists) = findAccount(msg.sender);
-    require(exists, "You do not have an account yet");
-    return accountList[pos].name;
+    require(accountList[msg.sender].exists, "Account does not exist");
+    return accountList[msg.sender].name;
   }
 
   function setName(string memory newName) public {
-    (uint pos, bool exists) = findAccount(msg.sender);
-    require(exists, "You don not have an account yet");
-    accountList[pos].name = newName;
+    require(accountList[msg.sender].exists, "Account does not exist");
+    accountList[msg.sender].name = newName;
   }
 
   function getContacts() public view returns(Contact[] memory) {
-    (uint pos, bool exists) = findAccount(msg.sender);
-    require(exists, "You do not have an account yet");
-
-    return accountList[pos].contacts;
+    require(accountList[msg.sender].exists, "Account does not exist");
+    return accountList[msg.sender].contacts;
   }
 
   function setAccountPublicity(bool isPublic) public {
-    (uint pos, bool exists) = findAccount(msg.sender);
-    require(exists, "You do not have an account yet");
-
-    accountList[pos].isPublic = isPublic;
+    require(accountList[msg.sender].exists, "Account does not exist");
+    accountList[msg.sender].isPublic = isPublic;
   } 
 
   // -----------------------------------------------------------------------------------------------------------
   // Requests
   // -----------------------------------------------------------------------------------------------------------
   function sendContactRequest(address receiverAddress) public {
-    (uint senderPos, bool senderExists) = findAccount(msg.sender);
-    require(senderExists, "You don not have an account yet");
-    (uint receiverPos, bool receiverExists) = findAccount(receiverAddress);
-    require(receiverExists, "The requested account does not exist");
+    require(accountList[msg.sender].exists, "You don't have an account yet");
+    require(accountList[receiverAddress].exists, "The account you requested does not exist");
   
-    string memory senderName = accountList[senderPos].name;
-    string memory receiverName = accountList[receiverPos].name;
-    accountList[senderPos].sendedRequests.push(Contact(receiverName, receiverAddress));
-    accountList[receiverPos].receivedRequests.push(Contact(senderName, msg.sender));
+    string memory senderName = accountList[msg.sender].name;
+    string memory receiverName = accountList[receiverAddress].name;
+    accountList[msg.sender].sendedRequests.push(Contact(receiverName, receiverAddress));
+    accountList[receiverAddress].receivedRequests.push(Contact(senderName, msg.sender));
   }
 
-  function deleteSendedRequest(address receiverAddress) public {
-    (uint senderPos, bool senderExists) = findAccount(msg.sender);
-    require(senderExists, "You don not have an account yet");
-    (uint receiverPos, bool receiverExists) = findAccount(receiverAddress);
-    require(receiverExists, "The requested account does not exist");
+  function retractContactRequest(address receiverAddress) public {
+    require(accountList[msg.sender].exists, "You don't have an account yet");
+    require(accountList[receiverAddress].exists, "The account you requested does not exist");
 
-    (uint sendedReqPos, bool sendedRequestExists) = findContactInList(receiverAddress, accountList[senderPos].sendedRequests);
-    (uint receivedReqPos, bool receivedRequestExists) = findContactInList(msg.sender, accountList[receiverPos].receivedRequests);
+    (uint sendedReqPos, bool sendedRequestExists) = findContactInList(receiverAddress, accountList[msg.sender].sendedRequests);
+    (uint receivedReqPos, bool receivedRequestExists) = findContactInList(msg.sender, accountList[receiverAddress].receivedRequests);
 
     assert(sendedRequestExists == receivedRequestExists);
     require(sendedRequestExists, "There is no request open for this account");
 
-    delete accountList[senderPos].sendedRequests[sendedReqPos];
-    delete accountList[receiverPos].receivedRequests[receivedReqPos];
+    delete accountList[msg.sender].sendedRequests[sendedReqPos];
+    delete accountList[receiverAddress].receivedRequests[receivedReqPos];
   }
 
   function acceptContactRequest(address requestFrom) public{
-    (uint receiverPos, bool receiverExists) = findAccount(msg.sender);
-    require(receiverExists, "You don not have an account yet");
-    (uint senderPos, bool senderExists) = findAccount(requestFrom);
-    require(senderExists, "The requesting account does not exist");
+    require(accountList[msg.sender].exists, "You don't have an account yet");
+    require(accountList[requestFrom].exists, "The account whose request you want to accept does not exist");
 
-    (uint sendedReqPos, bool sendedRequestExists) = findContactInList(msg.sender, accountList[senderPos].sendedRequests);
-    (uint receivedReqPos, bool receivedRequestExists) = findContactInList(requestFrom, accountList[receiverPos].receivedRequests);
+    (uint sendedReqPos, bool sendedRequestExists) = findContactInList(msg.sender, accountList[requestFrom].sendedRequests);
+    (uint receivedReqPos, bool receivedRequestExists) = findContactInList(requestFrom, accountList[msg.sender].receivedRequests);
     assert(sendedRequestExists == receivedRequestExists);
     require(sendedRequestExists, "There is no open request from this account");
-    delete accountList[senderPos].sendedRequests[sendedReqPos];
-    delete accountList[receiverPos].receivedRequests[receivedReqPos];
 
-    string memory senderName = accountList[senderPos].name;
-    string memory receiverName = accountList[receiverPos].name;
-    accountList[receiverPos].contacts.push(Contact(senderName, requestFrom));
-    accountList[senderPos].contacts.push(Contact(receiverName, msg.sender));
+    delete accountList[requestFrom].sendedRequests[sendedReqPos];
+    delete accountList[msg.sender].receivedRequests[receivedReqPos];
+    string memory senderName = accountList[requestFrom].name;
+    string memory receiverName = accountList[msg.sender].name;
+    accountList[msg.sender].contacts.push(Contact(senderName, requestFrom));
+    accountList[requestFrom].contacts.push(Contact(receiverName, msg.sender));
   }
 
   function denieContactRequest(address requestFrom) public {
-    (uint receiverPos, bool receiverExists) = findAccount(msg.sender);
-    require(receiverExists, "You don not have an account yet");
-    (uint senderPos, bool senderExists) = findAccount(requestFrom);
-    require(senderExists, "The requesting account does not exist");
+    require(accountList[msg.sender].exists, "You don't have an account yet");
+    require(accountList[requestFrom].exists, "The account whose request you want to denie does not exist");
 
-    (uint sendedReqPos, bool sendedRequestExists) = findContactInList(msg.sender, accountList[senderPos].sendedRequests);
-    (uint receivedReqPos, bool receivedRequestExists) = findContactInList(requestFrom, accountList[receiverPos].receivedRequests);
+    (uint sendedReqPos, bool sendedRequestExists) = findContactInList(msg.sender, accountList[requestFrom].sendedRequests);
+    (uint receivedReqPos, bool receivedRequestExists) = findContactInList(requestFrom, accountList[msg.sender].receivedRequests);
     assert(sendedRequestExists == receivedRequestExists);
     require(sendedRequestExists, "There is no open request from this account");
-    delete accountList[senderPos].sendedRequests[sendedReqPos];
-    delete accountList[receiverPos].receivedRequests[receivedReqPos];
+
+    delete accountList[requestFrom].sendedRequests[sendedReqPos];
+    delete accountList[msg.sender].receivedRequests[receivedReqPos];
   }
 
   function getReceivedContactRequests() public view returns(Contact[] memory) {
-    (uint pos, bool exists) = findAccount(msg.sender);
-    require(exists, "You do not have an account yet");
+    require(accountList[msg.sender].exists, "You don't have an account yet");
 
-    return accountList[pos].receivedRequests;
+    return accountList[msg.sender].receivedRequests;
   }
 
   function getSendedContactRequests() public view returns (Contact[] memory) {
-    (uint pos, bool exists) = findAccount(msg.sender);
-    require(exists, "You do not have an account yet");
+    require(accountList[msg.sender].exists, "You don't have an account yet");
 
-    return accountList[pos].sendedRequests;
+    return accountList[msg.sender].sendedRequests;
   }
 
   // -----------------------------------------------------------------------------------------------------------
@@ -179,14 +159,6 @@ contract ChatApp{
   // -----------------------------------------------------------------------------------------------------------
   // Computations
   // -----------------------------------------------------------------------------------------------------------
-  function findAccount(address accountAddress) private view returns(uint, bool) {
-    for(uint i = 0; i < accountList.length; i++) {
-      if(accountList[i].accountAddress == accountAddress) {
-        return (i, true);
-      }
-    }
-    return (0, false);
-  }
 
   function findContactInList(address accountAddress, Contact[] memory contactList) private pure returns(uint, bool) {
     for(uint i = 0; i < contactList.length; i++) {
@@ -195,13 +167,5 @@ contract ChatApp{
       }
     }
     return (0, false);
-  }
-
-  function insertAccount(Account memory newAccount) private {
-    accountList.push(newAccount);
-  }
-
-  function removeAccount(uint index) private {
-    delete accountList[index];
   }
 }
