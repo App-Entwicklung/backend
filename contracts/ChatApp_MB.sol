@@ -30,7 +30,6 @@ contract ChatApp{
     string text;
   }
 
-
   //Account[] private accountList;
   mapping(address => Account) private accountList;
   address[] private accountListKeys;
