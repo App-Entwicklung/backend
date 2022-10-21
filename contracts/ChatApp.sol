@@ -33,6 +33,7 @@ contract ChatApp{
 
   //Account[] private accountList;
   mapping(address => Account) private accountList;
+  address[] private accountListKeys;
   Chat[] private chatList;
 
   // -----------------------------------------------------------------------------------------------------------
@@ -44,10 +45,19 @@ contract ChatApp{
     
     accountList[msg.sender].name = name;
     accountList[msg.sender].exists = true;
+    accountListKeys.push(msg.sender);
   }
 
   function deleteAccount() public {
     require(accountList[msg.sender].exists, "Account does not exist");
+
+    for(uint i = 0; i < accountListKeys.length; i++ ) {
+      if(accountListKeys[i] == msg.sender) {
+        delete accountListKeys[i];
+        break;
+      }
+    }
+
     accountList[msg.sender].exists = false;
   }
 
@@ -155,6 +165,34 @@ contract ChatApp{
   function receiveMessages() public {
 
   }
+
+  // -----------------------------------------------------------------------------------------------------------
+  // Contract Infos
+  // -----------------------------------------------------------------------------------------------------------
+
+  function getAllContacts() public view returns (Contact[] memory) {
+    // for development
+    Contact[] memory contacts = new Contact[](1);
+
+    for(uint i; i < accountListKeys.length; i++) {
+      contacts[i] = Contact(accountList[accountListKeys[i]].name, accountListKeys[i]);
+    }
+
+    return contacts;
+  }
+
+  function getAllPublicContacts() public view returns (Contact[] memory) {
+    Contact[] memory contacts = new Contact[](1);
+
+    for(uint i; i < accountListKeys.length; i++) {
+      if(accountList[accountListKeys[i]].isPublic) {
+        contacts[i] = Contact(accountList[accountListKeys[i]].name, accountListKeys[i]);
+      }
+    }
+
+    return contacts;
+  }
+
 
   // -----------------------------------------------------------------------------------------------------------
   // Computations
