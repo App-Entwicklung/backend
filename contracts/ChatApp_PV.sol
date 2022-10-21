@@ -153,36 +153,26 @@ contract ChatApp{
   // -----------------------------------------------------------------------------------------------------------
 
  function getChatCode(address pubkey1, address pubkey2) internal pure returns(bytes32) {
-        if(pubkey1 < pubkey2)
-            return keccak256(abi.encodePacked(pubkey1, pubkey2));
-        else
-            return keccak256(abi.encodePacked(pubkey2, pubkey1));
-    }
+    if(pubkey1 < pubkey2)
+      return keccak256(abi.encodePacked(pubkey1, pubkey2));
+    else
+      return keccak256(abi.encodePacked(pubkey2, pubkey1));
+  }
 
   function getMessages(address partnerAdress) public view returns(Message[] memory) {
-     bytes32 chatCode = getChatCode(msg.sender, partnerAdress);
-        return allMessages[chatCode];
+    require(accountList[msg.sender].exists, "Create an account first!");
+    bytes32 chatCode = getChatCode(msg.sender, partnerAdress);
+    return allMessages[chatCode];
   }
 
   function sendMessage(address receiver, string calldata text) public returns(bool) {
     require(accountList[msg.sender].exists, "Create an account first!");
     require(accountList[receiver].exists, "Unknown User");
-    if(!accountList[receiver].isPublic) {
-      bool contactOfSender = isContactInList(receiver, accountList[msg.sender].contacts);
-      if(contactOfSender) {
-        bytes32 chatCode = getChatCode(msg.sender, receiver);
-        Message memory newMsg = Message(msg.sender, block.timestamp, text);
-        allMessages[chatCode].push(newMsg);
-        return true;
-      } else {
-          return false;
-      }
-    } else {
-        bytes32 chatCode = getChatCode(msg.sender, receiver);
-        Message memory newMsg = Message(msg.sender, block.timestamp, text);
-        allMessages[chatCode].push(newMsg);
-        return true;
-    }
+    require(isContactInList(receiver, accountList[msg.sender].contacts), "You are not in Contacts!");
+    bytes32 chatCode = getChatCode(msg.sender, receiver);
+    Message memory newMsg = Message(msg.sender, block.timestamp, text);
+    allMessages[chatCode].push(newMsg);
+    return true;
   }
 
 //function receiveMessages(address _address)public view returns(string[] memory) {
