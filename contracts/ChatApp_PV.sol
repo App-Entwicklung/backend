@@ -169,6 +169,7 @@ contract ChatApp{
     require(accountList[msg.sender].exists, "Create an account first!");
     require(accountList[receiver].exists, "Unknown User");
     require(isContactInList(receiver, accountList[msg.sender].contacts), "You are not in Contacts!");
+    require(isContactInList(msg.sender, accountList[receiver].contacts), "You are not in Contacts!");
     bytes32 chatCode = getChatCode(msg.sender, receiver);
     Message memory newMsg = Message(msg.sender, block.timestamp, text);
     allMessages[chatCode].push(newMsg);
