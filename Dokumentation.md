@@ -1,4 +1,4 @@
-acceptContactRequest
+## acceptContactRequest
 		"inputs": [
 			{
 				"internalType": "address",
@@ -8,7 +8,7 @@ acceptContactRequest
 		],
 		"outputs": [],
     
-createAccount
+## createAccount
 	{
 		"inputs": [
 			{
@@ -20,12 +20,12 @@ createAccount
 		"outputs": [],
     
     
-deleteAccount
+## deleteAccount
 	{
 		"inputs": [],
 		"outputs": [],
     
-denieContactRequest    
+## denieContactRequest    
 		"inputs": [
 			{
 				"internalType": "address",
@@ -35,7 +35,7 @@ denieContactRequest
 		],
 		"outputs": [],
     
-retractContactRequest    
+## retractContactRequest    
 		"inputs": [
 			{
 				"internalType": "address",
@@ -45,7 +45,7 @@ retractContactRequest
 		],
 		"outputs": [],
 
-sendContactRequest
+## sendContactRequest
 	{
 		"inputs": [
 			{
@@ -57,7 +57,7 @@ sendContactRequest
 		"outputs": [],
     
     
-sendMessage    
+## sendMessage    
 	{
 		"inputs": [
 			{
@@ -80,7 +80,7 @@ sendMessage
 		],
 
 
-setAccountPublicity
+## setAccountPublicity
 	{
 		"inputs": [
 			{
@@ -92,7 +92,7 @@ setAccountPublicity
 		"outputs": [],
 
 
-setName
+## setName
 	{
 		"inputs": [
 			{
@@ -103,7 +103,7 @@ setName
 		],
 		"outputs": [],
 
-allMessages
+## allMessages
 	{
 		"inputs": [
 			{
@@ -136,7 +136,7 @@ allMessages
 		],
 
 
-getAllContacts
+## getAllContacts
 	{
 		"inputs": [],
 		"outputs": [
@@ -159,7 +159,7 @@ getAllContacts
 			}
 		],
 
-getAllPublicContacts
+## getAllPublicContacts
 	{
 		"inputs": [],
 		"outputs": [
@@ -182,7 +182,7 @@ getAllPublicContacts
 			}
 		],
 
-getContacts
+## getContacts
 	{
 		"inputs": [],
 		"outputs": [
@@ -206,7 +206,7 @@ getContacts
 		],
 
 
-getMessages
+## getMessages
 	{
 		"inputs": [
 			{
@@ -240,7 +240,7 @@ getMessages
 			}
 		],
 
-getName
+## getName
 	{
 		"inputs": [],
 		"outputs": [
@@ -276,7 +276,7 @@ getName
 			}
 		],
 
-getSendedContactRequests
+## getSendedContactRequests
 	{
 		"inputs": [],
 		"outputs": [
