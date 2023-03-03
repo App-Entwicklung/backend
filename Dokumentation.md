@@ -8,7 +8,8 @@
 		]
 		
 		"outputs": []
-    
+Die Methode ermöglicht es eine zuvor gesendete Kontaktanfrage zu akzeptieren.
+
 ### createAccount
 		"inputs": [
 			{
@@ -19,12 +20,13 @@
 		]
 		
 		"outputs": []
-    
+Die Methode ermöglicht es einen Account zu erstellen.
     
 ### deleteAccount
 		"inputs": []
 		
 		"outputs": []
+Die Methode ermöglicht es einen Account zu löschen.		
     
 ### denieContactRequest    
 		"inputs": [
@@ -36,7 +38,8 @@
 		]
 		
 		"outputs": []
-    
+Die Methode ermöglicht es eine Kontaktanfrage abzulehnen.
+
 ### retractContactRequest    
 		"inputs": [
 			{
@@ -47,6 +50,7 @@
 		]
 		
 		"outputs": []
+Die Methode ermöglicht es eine Kontaktanfrage zurückzuziehen.
 
 ### sendContactRequest
 		"inputs": [
@@ -58,7 +62,7 @@
 		]
 		
 		"outputs": []
-    
+Die Methode ermöglicht es eine Kontaktanfrage zu senden.
     
 ### sendMessage    
 		"inputs": [
@@ -81,7 +85,7 @@
 				"type": "bool"
 			}
 		]
-
+Die Methode ermöglicht es Nachrichten zu senden.
 
 ### setAccountPublicity
 		"inputs": [
@@ -93,7 +97,7 @@
 		]
 		
 		"outputs": []
-
+Die Methode ermöglicht es eine Kontaktanfrage zurückzuziehen.
 
 ### setName
 		"inputs": [
@@ -105,6 +109,7 @@
 		]
 		
 		"outputs": []
+Die Methode ermöglicht es den Nutzernamen zu ändern.
 
 ### allMessages
 		"inputs": [
@@ -137,7 +142,7 @@
 				"type": "string"
 			}
 		]
-
+Die Methode ermöglicht es den Nutzernamen zu ändern.
 
 ### getAllContacts
 		"inputs": []
@@ -161,6 +166,7 @@
 				"type": "tuple[]"
 			}
 		]
+Die Methode ermöglicht es alle Kontakte zurückgegeben zu bekommen.
 
 ### getAllPublicContacts
 		"inputs": []
@@ -184,6 +190,7 @@
 				"type": "tuple[]"
 			}
 		]
+Die Methode ermöglicht es alle öffentlichen Nutzer zurückzugeben.
 
 ### getContacts
 		"inputs": []
@@ -207,7 +214,7 @@
 				"type": "tuple[]"
 			}
 		]
-
+Die Methode ermöglicht es alle Kontakte eines Nutzers zurückzugeben.
 
 ### getMessages
 		"inputs": [
@@ -242,6 +249,8 @@
 				"type": "tuple[]"
 			}
 		]
+Die Methode ermöglicht es alle Nachrichten eines Nutzers mit einem anderen Nutzer zurückzugeben.		
+
 
 ### getName
 		"inputs": []
@@ -278,6 +287,7 @@
 				"type": "tuple[]"
 			}
 		]
+Die Methode ermöglicht es den Namen eines Nutzers zurückzugeben.
 
 ### getSendedContactRequests
 		"inputs": []
@@ -301,3 +311,4 @@
 				"type": "tuple[]"
 			}
 		]
+Die Methode ermöglicht es alle gesendeten Kontaktanfragen eines Nutzers zurückzugeben.
