@@ -17,7 +17,6 @@
 - Netürliches Material-Design
 - Vertritt Mobile-First sehr stark
 - Einfache Seperation of Concerns &rarr; Widget-Based
-
 ---
 
 ## Entscheidung für Solidity
@@ -37,3 +36,6 @@
 - Automatische Absicherung vor DDoS-Angriffen (Durch gas)
 - Einfache Monetarisierung
 
+#### Sicherheit 
+
+#### Performance
