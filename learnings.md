@@ -100,8 +100,8 @@
 ### Require
 
 ```ts
-require(bool)
-require(bool, 'Error String')
+require(bool);
+require(bool, "Error String");
 ```
 
 - Wenn bool falsch ist wird die Ausführung gestoppt und bisherige Änderungen werden rückgängig gemacht
@@ -111,7 +111,7 @@ require(bool, 'Error String')
 ### Assert
 
 ```ts
-assert(bool)
+assert(bool);
 ```
 
 - Verwendung meist von internen Feldern / Methoden
@@ -124,7 +124,7 @@ assert(bool)
 ### Revert
 
 ```ts
-revert()
+revert();
 ```
 
 - bricht Bedingungslos ab
@@ -204,3 +204,20 @@ revert()
     uint alter;
   }
 ```
+
+## 2023
+
+- Chainlist.org:
+  - Chains finden
+  - zu Wallet hinzufügen
+- dashboard.alchemy.com:
+  - Faucet verwenden
+- Deployment:
+  - Compiliere contract
+  - letzter Menupunkt im remix
+    - verbinde mit MetaMask
+    - checke ob alles passt
+    - click on deploy
+    - MetaMask popup überprüfen, ob alles passt
+    - View on Etherscan => erster Contract https://goerli.etherscan.io/tx/0xf20e541f2f38ae85db00903baefd1ea012f95564d4347e52b902e605a41b63c6
+- zum Test kann auch auf einer VM deployt werden
