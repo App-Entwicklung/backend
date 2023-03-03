@@ -9,7 +9,6 @@
 		"outputs": [],
     
 ## createAccount
-	{
 		"inputs": [
 			{
 				"internalType": "string",
@@ -21,7 +20,6 @@
     
     
 ## deleteAccount
-	{
 		"inputs": [],
 		"outputs": [],
     
@@ -46,7 +44,6 @@
 		"outputs": [],
 
 ## sendContactRequest
-	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -58,7 +55,6 @@
     
     
 ## sendMessage    
-	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -81,7 +77,6 @@
 
 
 ## setAccountPublicity
-	{
 		"inputs": [
 			{
 				"internalType": "bool",
@@ -93,7 +88,6 @@
 
 
 ## setName
-	{
 		"inputs": [
 			{
 				"internalType": "string",
@@ -104,7 +98,6 @@
 		"outputs": [],
 
 ## allMessages
-	{
 		"inputs": [
 			{
 				"internalType": "bytes32",
@@ -137,7 +130,6 @@
 
 
 ## getAllContacts
-	{
 		"inputs": [],
 		"outputs": [
 			{
@@ -160,7 +152,6 @@
 		],
 
 ## getAllPublicContacts
-	{
 		"inputs": [],
 		"outputs": [
 			{
@@ -183,7 +174,6 @@
 		],
 
 ## getContacts
-	{
 		"inputs": [],
 		"outputs": [
 			{
@@ -207,7 +197,6 @@
 
 
 ## getMessages
-	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -241,7 +230,6 @@
 		],
 
 ## getName
-	{
 		"inputs": [],
 		"outputs": [
 			{
@@ -277,7 +265,6 @@
 		],
 
 ## getSendedContactRequests
-	{
 		"inputs": [],
 		"outputs": [
 			{
@@ -297,5 +284,4 @@
 				"name": "",
 				"type": "tuple[]"
 			}
-		],
-]
+		]
