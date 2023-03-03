@@ -5,8 +5,9 @@
 				"name": "requestFrom",
 				"type": "address"
 			}
-		],
-		"outputs": [],
+		]
+		
+		"outputs": []
     
 ## createAccount
 		"inputs": [
@@ -15,13 +16,15 @@
 				"name": "name",
 				"type": "string"
 			}
-		],
-		"outputs": [],
+		]
+		
+		"outputs": []
     
     
 ## deleteAccount
-		"inputs": [],
-		"outputs": [],
+		"inputs": []
+		
+		"outputs": []
     
 ## denieContactRequest    
 		"inputs": [
@@ -30,8 +33,9 @@
 				"name": "requestFrom",
 				"type": "address"
 			}
-		],
-		"outputs": [],
+		]
+		
+		"outputs": []
     
 ## retractContactRequest    
 		"inputs": [
@@ -40,8 +44,9 @@
 				"name": "receiverAddress",
 				"type": "address"
 			}
-		],
-		"outputs": [],
+		]
+		
+		"outputs": []
 
 ## sendContactRequest
 		"inputs": [
@@ -50,8 +55,9 @@
 				"name": "receiverAddress",
 				"type": "address"
 			}
-		],
-		"outputs": [],
+		]
+		
+		"outputs": []
     
     
 ## sendMessage    
@@ -66,14 +72,15 @@
 				"name": "text",
 				"type": "string"
 			}
-		],
+		]
+		
 		"outputs": [
 			{
 				"internalType": "bool",
 				"name": "",
 				"type": "bool"
 			}
-		],
+		]
 
 
 ## setAccountPublicity
@@ -83,8 +90,9 @@
 				"name": "isPublic",
 				"type": "bool"
 			}
-		],
-		"outputs": [],
+		]
+		
+		"outputs": []
 
 
 ## setName
@@ -94,8 +102,9 @@
 				"name": "newName",
 				"type": "string"
 			}
-		],
-		"outputs": [],
+		]
+		
+		"outputs": []
 
 ## allMessages
 		"inputs": [
@@ -109,7 +118,8 @@
 				"name": "",
 				"type": "uint256"
 			}
-		],
+		]
+		
 		"outputs": [
 			{
 				"internalType": "address",
@@ -126,11 +136,12 @@
 				"name": "text",
 				"type": "string"
 			}
-		],
+		]
 
 
 ## getAllContacts
-		"inputs": [],
+		"inputs": []
+		
 		"outputs": [
 			{
 				"components": [
@@ -149,10 +160,11 @@
 				"name": "",
 				"type": "tuple[]"
 			}
-		],
+		]
 
 ## getAllPublicContacts
-		"inputs": [],
+		"inputs": []
+		
 		"outputs": [
 			{
 				"components": [
@@ -171,10 +183,11 @@
 				"name": "",
 				"type": "tuple[]"
 			}
-		],
+		]
 
 ## getContacts
-		"inputs": [],
+		"inputs": []
+		
 		"outputs": [
 			{
 				"components": [
@@ -193,7 +206,7 @@
 				"name": "",
 				"type": "tuple[]"
 			}
-		],
+		]
 
 
 ## getMessages
@@ -203,7 +216,8 @@
 				"name": "partnerAdress",
 				"type": "address"
 			}
-		],
+		]
+		
 		"outputs": [
 			{
 				"components": [
@@ -227,10 +241,11 @@
 				"name": "",
 				"type": "tuple[]"
 			}
-		],
+		]
 
 ## getName
-		"inputs": [],
+		"inputs": []
+		
 		"outputs": [
 			{
 				"internalType": "string",
@@ -262,10 +277,11 @@
 				"name": "",
 				"type": "tuple[]"
 			}
-		],
+		]
 
 ## getSendedContactRequests
-		"inputs": [],
+		"inputs": []
+		
 		"outputs": [
 			{
 				"components": [
