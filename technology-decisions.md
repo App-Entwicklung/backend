@@ -25,17 +25,19 @@
 
 - Wollten uns challengen
 - Interesse an der Blockchain
-- Erfahrungen in Web3 Sammeln
+- Erfahrungen in Web3 sammeln
 - Andere Umsetzung von OO-Programmier Konzepten
 - ggf. als Act of Revolte einsetzbar
 
 ### Technische Gründe
 
-- Blockchain
+- Entwicklung auf der Blockchain
 - Web3 ist die Zukunft
-- Automatische Absicherung vor DDoS-Angriffen (Durch gas)
+- Ausfallsicherheit:
+  - Automatische Absicherung vor DDoS-Angriffen (Durch gas)
+  - Contract läuft dezentralisiert und Ausfall einzelner Server ist irrelevant
+- Persönliche Sicherheit:
+  - Deanonymisation durch die Wallets
+  - Transaktionen sind öffentlich validierbar und dennoch bleibt eine Anonymität bestehen
+  - geringere Gefahr der Impersination-Problematik
 - Einfache Monetarisierung
-
-#### Sicherheit 
-
-#### Performance
